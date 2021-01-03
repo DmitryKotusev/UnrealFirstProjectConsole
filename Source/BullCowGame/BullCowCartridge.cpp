@@ -21,25 +21,7 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
         return;
     }
 
-    if (Input.Equals(HiddenWord, ESearchCase::IgnoreCase))
-    {
-        PrintLine(TEXT("You have guessed the word!"));
-
-        EndGame();
-
-        return;
-    }
-    else
-    {
-        PrintLine(TEXT("Sorry. You failed to guess the word!"));
-
-        PrintLine(TEXT("%i lives remaining."), --Lives);
-    }
-
-    if (Lives <= 0)
-    {
-        EndGame();
-    }
+    ProcessGuess(Input);
 }
 
 void UBullCowCartridge::SetupGame()
@@ -58,4 +40,25 @@ void UBullCowCartridge::EndGame()
     bGameOver = true;
 
     PrintLine(TEXT("Game over. Press Enter to continue."));
+}
+
+void UBullCowCartridge::ProcessGuess(const FString& Input)
+{
+    if (Input.Equals(HiddenWord, ESearchCase::IgnoreCase))
+    {
+        PrintLine(TEXT("You have guessed the word!"));
+
+        EndGame();
+
+        return;
+    }
+    
+    PrintLine(TEXT("Sorry. You failed to guess the word!"));
+
+    PrintLine(TEXT("%i lives remaining."), --Lives);
+
+    if (Lives <= 0)
+    {
+        EndGame();
+    }
 }
